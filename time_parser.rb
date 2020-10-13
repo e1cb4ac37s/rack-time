@@ -8,15 +8,22 @@ class TimeParser
     'second' => '%S'
   }
 
-  def self.call(params)
-    self.new(params)
-  end
-
   def initialize(params)
     @format = params['format']
     @format_arr = []
     @invalid = []
-    parse
+  end
+
+  def call
+    if @format
+      @format.split(',').each do |f|
+        if FORMATTERS[f]
+          @format_arr << FORMATTERS[f]
+        else
+          @invalid << f
+        end
+      end
+    end
   end
 
   def body
@@ -31,20 +38,6 @@ class TimeParser
     unless valid?
       return "Unknown time format #{@invalid}" if @invalid.any?
       return "Format is not specified" if @format_arr.empty?
-    end
-  end
-
-  private
-
-  def parse
-    if @format
-      @format.split(',').each do |f|
-        if FORMATTERS[f]
-          @format_arr << FORMATTERS[f]
-        else
-          @invalid << f
-        end
-      end
     end
   end
 end
