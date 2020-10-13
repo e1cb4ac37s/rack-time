@@ -3,10 +3,6 @@ require_relative 'time_parser'
 class App
   def call(env)
     @request = Rack::Request.new(env)
-    route
-  end
-
-  def route
     @request.path == '/time' ? time : response(404, 'Not Found')
   end
 
