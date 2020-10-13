@@ -23,14 +23,17 @@ class TimeParser
   end
 
   def body
-    return "Unknown time format #{@invalid}" if @invalid.any?
-
-    return "Format is not specified" if @format_arr.empty?
-
-    Time.now.strftime(@format_arr.join('-'))
+    Time.now.strftime(@format_arr.join('-')) if valid?
   end
 
   def valid?
     @invalid.empty? && @format_arr.any?
+  end
+
+  def error_message
+    unless valid?
+      return "Unknown time format #{@invalid}" if @invalid.any?
+      return "Format is not specified" if @format_arr.empty?
+    end
   end
 end
