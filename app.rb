@@ -11,11 +11,11 @@ class App
   end
 
   def time
-    time_parser = TimeParser.new(@request.params)
-    if time_parser.valid?
-      response(200, time_parser.body)
+    parsed = TimeParser.call(@request.params)
+    if parsed.valid?
+      response(200, parsed.body)
     else
-      response(400, time_parser.error_message)
+      response(400, parsed.error_message)
     end
   end
 
